@@ -1,0 +1,1063 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Banco da Qualidade</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap");
+      :root {
+        font-family: "DM Sans", Arial, sans-serif;
+        color: #e8eef7;
+        background: #091322;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      button,
+      input {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+      .wrap {
+        max-width: 1160px;
+        margin: auto;
+        padding: 25px 20px 60px;
+      }
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .brand {
+        font-size: 23px;
+        font-weight: 800;
+      }
+      .brand span {
+        color: #55ddbc;
+      }
+      .sub {
+        color: #9eafc6;
+        font-size: 14px;
+      }
+      .pill {
+        background: #1a3046;
+        border: 1px solid #35536c;
+        padding: 9px 13px;
+        border-radius: 30px;
+        font-size: 13px;
+      }
+      .hero {
+        padding: 36px 0 18px;
+      }
+      .hero h1 {
+        font-size: clamp(30px, 5vw, 53px);
+        line-height: 1.08;
+        margin: 10px 0;
+      }
+      .hero p {
+        color: #b4c3d7;
+        max-width: 730px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+        gap: 14px;
+      }
+      .card {
+        background: #122238;
+        border: 1px solid #2a405a;
+        border-radius: 17px;
+        padding: 19px;
+        margin: 12px 0;
+      }
+      .card h3 {
+        margin: 0 0 9px;
+      }
+      .small {
+        font-size: 13px;
+        color: #a8b8cc;
+      }
+      .tag {
+        display: inline-block;
+        color: #63e0c2;
+        background: #143c3d;
+        padding: 5px 9px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .btn {
+        background: #48d6ae;
+        color: #08201d;
+        border: 0;
+        border-radius: 11px;
+        padding: 11px 16px;
+        font-weight: 800;
+      }
+      .btn.secondary {
+        background: #243c55;
+        color: #e8eef7;
+      }
+      .btn.danger {
+        background: #6e3140;
+        color: white;
+      }
+      .btn:focus-visible,
+      input:focus-visible {
+        outline: 3px solid #ffcd76;
+      }
+      .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 15px;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin: 16px 0;
+      }
+      .stat {
+        background: #152a40;
+        border-radius: 13px;
+        padding: 13px;
+      }
+      .stat strong {
+        display: block;
+        font-size: 23px;
+      }
+      .stat small {
+        color: #aabbd0;
+      }
+      .options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+        gap: 10px;
+      }
+      .option {
+        border: 1px solid #36536b;
+        background: #192e46;
+        color: #eef5ff;
+        padding: 13px;
+        border-radius: 11px;
+        text-align: left;
+      }
+      .option.selected {
+        border-color: #53e0bd;
+        background: #194c4c;
+      }
+      .option.correct {
+        border-color: #55dba8;
+      }
+      .option.wrong {
+        border-color: #ff7b7b;
+      }
+      .sectiontitle {
+        margin-top: 27px;
+      }
+      .progress {
+        height: 8px;
+        background: #20364d;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .progress > div {
+        height: 100%;
+        background: #4cdbb4;
+        transition: width 0.2s;
+      }
+      .notice {
+        background: #1c334b;
+        border-left: 4px solid #53d8b5;
+        padding: 14px;
+        border-radius: 8px;
+        margin: 13px 0;
+      }
+      .bad {
+        border-color: #ff9b83;
+      }
+      .columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+      .money {
+        color: #68e2b5;
+      }
+      .warning {
+        color: #ffcc7c;
+      }
+      .muted {
+        color: #9eafc6;
+      }
+      .step {
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        color: #62dcbc;
+        font-weight: 800;
+      }
+      .score {
+        font-size: 44px;
+        font-weight: 800;
+        color: #6ae3bc;
+      }
+      .field {
+        background: #192f46;
+        color: white;
+        border: 1px solid #3b5671;
+        border-radius: 10px;
+        padding: 11px;
+        width: 100%;
+      }
+      .checkrow {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin: 10px 0;
+      }
+      .footer {
+        font-size: 12px;
+        color: #8196ad;
+        margin-top: 30px;
+      }
+      .hidden {
+        display: none;
+      }
+      @media (max-width: 680px) {
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .columns {
+          grid-template-columns: 1fr;
+        }
+        .wrap {
+          padding: 18px 12px;
+        }
+        .hero {
+          padding-top: 20px;
+        }
+      }
+
+      .option.correct {
+        background: #154b3e;
+        border-color: #55dba8;
+      }
+      .option.wrong {
+        background: #552c3a;
+        border-color: #ff7b7b;
+      }
+      .option.selected {
+        box-shadow: 0 0 0 2px #53e0bd inset;
+      }
+      .panel-options {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 155px), 1fr));
+      }
+      .panel-options .option {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        min-height: 82px;
+      }
+      .panel-options .option:focus-visible {
+        outline: 2px solid #eef5ff;
+        outline-offset: 3px;
+      }
+      .panel-address {
+        color: #aabbd0;
+        font-size: 0.85rem;
+      }
+      .panel-selection {
+        margin: 12px 0 0;
+      }
+      .result-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .result-list > li {
+        padding: 12px 0;
+        border-bottom: 1px solid #294057;
+      }
+      .result-list > li:last-child {
+        border-bottom: 0;
+      }
+      .result-list p {
+        margin: 6px 0;
+      }
+      .result-list details {
+        margin-top: 8px;
+      }
+      .result-list summary {
+        cursor: pointer;
+      }
+      .result-list details ul {
+        padding-inline-start: 22px;
+      }
+      .notice.bad {
+        border-left-color: #ff9b83;
+        background: #3c2938;
+      }
+      .options button:disabled {
+        opacity: 1;
+        cursor: default;
+      }
+      .notice p {
+        margin: 8px 0;
+      }
+      .hero .notice {
+        max-width: 850px;
+      }
+      @media (max-width: 600px) {
+        .actions {
+          flex-direction: column;
+        }
+        .actions .btn {
+          width: 100%;
+          min-height: 44px;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      const LINK_AVALIACAO = "https://forms.gle/aZBpQvVp7VKEJSQbA"; // Cole aqui o link do formulário de avaliação
+      const $ = (s) => document.querySelector(s),
+        money = (n) =>
+          n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      const investments = [
+        ["I01", "Triagem de materiais", 5000, 10, 0],
+        ["I02", "Identificação do estoque", 4000, 8, 0],
+        ["I03", "Painel de ferramentas", 6000, 12, 1],
+        ["I04", "Treinamento de organização", 8000, 12, 1],
+        ["I05", "Limpeza técnica", 5000, 10, 2],
+        ["I06", "Manutenção preventiva", 12000, 20, 2],
+        ["I07", "Procedimentos operacionais", 7000, 14, 3],
+        ["I08", "Identificação visual", 4000, 8, 3],
+        ["I09", "Auditorias periódicas", 6000, 12, 4],
+        ["I10", "Máquina automatizada", 30000, 25, -1],
+      ];
+      const stages = [
+        {
+          name: "Seiri • Senso de utilização",
+          intro:
+            "Classifique os 10 materiais. Itens sem identificação ou aguardando inspeção devem ser avaliados, nunca descartados automaticamente.",
+          items: [
+            ["Parafusos em uso", "Necessário"],
+            ["Peças aprovadas", "Necessário"],
+            ["EPIs em bom estado", "Necessário"],
+            ["Matéria-prima atual", "Necessário"],
+            ["Peças obsoletas", "Desnecessário"],
+            ["Embalagens vazias", "Desnecessário"],
+            ["Ferramenta quebrada", "Desnecessário"],
+            ["Documentos vencidos", "Desnecessário"],
+            ["Peças sem identificação", "Avaliar"],
+            ["Lote aguardando inspeção", "Avaliar"],
+          ],
+          opts: ["Necessário", "Desnecessário", "Avaliar"],
+          points: 2,
+        },
+        {
+          name: "Seiton • Senso de organização",
+          intro:
+            "Devolva os seis itens ao painel. Cada espaço tem uma etiqueta que indica o que deve ficar ali.",
+          items: [
+            ["Chave", "A1"],
+            ["Alicate", "A2"],
+            ["Martelo", "A3"],
+            ["Paquímetro", "B1"],
+            ["Trena", "B2"],
+            ["EPI", "B3"],
+          ],
+          opts: ["A1", "A2", "A3", "B1", "B2", "B3"],
+          labels: {
+            A1: "Apertar porcas e parafusos",
+            A2: "Segurar e dobrar arames",
+            A3: "Bater pregos",
+            B1: "Medir diâmetros com precisão",
+            B2: "Medir distâncias com fita retrátil",
+            B3: "Proteger o trabalhador",
+          },
+          points: 3,
+        },
+        {
+          name: "Seiso • Senso de limpeza",
+          intro:
+            "Para cada ocorrência, escolha a ação que elimina ou controla a causa com segurança.",
+          items: [
+            [
+              "Óleo derramado próximo à máquina",
+              "Isolar, conter e corrigir o vazamento",
+            ],
+            [
+              "Lixeira transbordando",
+              "Adequar a coleta e frequência de retirada",
+            ],
+            [
+              "Cavacos metálicos no chão",
+              "Recolher com ferramentas e EPIs adequados",
+            ],
+            [
+              "Poeira acumulada nos equipamentos",
+              "Definir limpeza preventiva segura",
+            ],
+            ["Vazamento recorrente de fluido", "Investigar e reparar a origem"],
+          ],
+          points: 4,
+        },
+        {
+          name: "Seiketsu • Senso de padronização",
+          intro:
+            "Monte o procedimento de início de turno, escolhendo a etapa correta para cada posição.",
+          items: [
+            ["Etapa 1", "Verificar EPIs"],
+            ["Etapa 2", "Inspecionar posto e máquina"],
+            ["Etapa 3", "Conferir identificação de materiais"],
+            ["Etapa 4", "Registrar anomalias"],
+            ["Etapa 5", "Confirmar liberação"],
+            ["Etapa 6", "Iniciar produção autorizada"],
+          ],
+          points: 3,
+        },
+        {
+          name: "Shitsuke • Senso de disciplina",
+          intro:
+            "Leia o que aconteceu em cada dia e escolha a atividade adequada. Depois, decida como acompanhar os resultados da auditoria.",
+          items: [
+            ["Segunda", "Triagem de itens"],
+            ["Terça", "Organização"],
+            ["Quarta", "Inspeção e limpeza"],
+            ["Quinta", "Verificação dos padrões"],
+            ["Sexta", "Auditoria 5S"],
+          ],
+          opts: [
+            "Triagem de itens",
+            "Organização",
+            "Inspeção e limpeza",
+            "Verificação dos padrões",
+            "Auditoria 5S",
+          ],
+          points: 3,
+        },
+      ];
+      const events = [
+        [
+          "Falha na máquina",
+          (s) =>
+            s.bought.includes(5)
+              ? [0, 0, "Manutenção preventiva evitou o custo."]
+              : [-8000, 0, "Reparo emergencial: R$ 8.000."],
+        ],
+        [
+          "Cliente insatisfeito",
+          (s) =>
+            s.bought.includes(6)
+              ? [0, 0, "Procedimento evitou a penalidade."]
+              : [0, -8, "Reclamação: -8 pontos."],
+        ],
+        [
+          "Estoque perdido",
+          (s) =>
+            s.bought.includes(0)
+              ? [0, 0, "Triagem evitou perda."]
+              : [-4000, 0, "Perda de estoque: R$ 4.000."],
+        ],
+        [
+          "Acidente evitado",
+          (s) =>
+            s.bought.includes(4) && s.completed[2]
+              ? [0, 5, "Prevenção eficaz: +5 pontos."]
+              : [0, 0, "Sem bônus."],
+        ],
+        [
+          "Auditoria surpresa",
+          (s) =>
+            s.bought.includes(8) && s.completed[4]
+              ? [0, 8, "Auditoria aprovada: +8 pontos."]
+              : [0, -5, "Falha de auditoria: -5 pontos."],
+        ],
+        [
+          "Ferramenta extraviada",
+          (s) =>
+            s.bought.includes(2)
+              ? [0, 0, "Painel evitou extravio."]
+              : [0, -5, "Extravio: -5 pontos."],
+        ],
+        [
+          "Erro de identificação",
+          (s) =>
+            s.bought.includes(7)
+              ? [0, 0, "Identificação visual evitou erro."]
+              : [-3000, 0, "Retrabalho: R$ 3.000."],
+        ],
+        [
+          "Produção eficiente",
+          (s) =>
+            s.bought.includes(3) && s.completed[1]
+              ? [0, 5, "Equipe treinada: +5 pontos."]
+              : [0, 0, "Sem bônus."],
+        ],
+      ];
+      let state;
+      function fresh() {
+        state = {
+          screen: "home",
+          team: "Equipe 1",
+          budget: 50000,
+          bought: [],
+          stage: 0,
+          answers: {},
+          stageScores: [],
+          completed: [],
+          bench: null,
+          benchReason: "",
+          benchPts: 0,
+          events: [],
+          eventPoints: 0,
+          history: [],
+          seed: Math.floor(Math.random() * 1e8),
+        };
+      }
+      function save() {
+        localStorage.setItem("bancoQualidadeV1", JSON.stringify(state));
+      }
+      function render() {
+        save();
+        const a = $("#app");
+        a.innerHTML = `<main class="wrap"><header class="top"><div class="brand">◈ BANCO <span>DA QUALIDADE</span><div class="sub">MetalPrime • Simulação de gestão industrial</div></div><div class="pill">${escapeHTML(state.team)} · ${state.screen === "home" ? "Início" : "Partida ativa"}</div></header><div id="view"></div><footer class="footer">Jogo educativo fictício • Custos, resultados e Benchmarking são simulados • Os dados da partida são salvos neste navegador.</footer></main>`;
+        const v = $("#view");
+        ({ home, invest, challenge, benchmark, eventScreen, results })[
+          state.screen
+        ](v);
+      }
+      function escapeHTML(t) {
+        return String(t).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      }
+      function go(screen) {
+        if (
+          ["benchmark", "eventScreen", "results"].includes(screen) &&
+          state.stageScores.length < 5
+        )
+          return;
+        if (["eventScreen", "results"].includes(screen) && state.bench === null)
+          return;
+        if (screen === "results" && state.events.length < 2) return;
+        state.screen = screen;
+        render();
+        window.scrollTo(0, 0);
+      }
+      function home(v) {
+        v.innerHTML = `<section class="hero"><span class="tag">GRUPO 5 · ORÇAMENTO DA QUALIDADE</span><h1>Invista bem.<br>Evite prejuízos.<br><span class="money">Salve a fábrica.</span></h1><p>Você é responsável pelo orçamento da MetalPrime. Escolha investimentos, resolva os cinco desafios 5S, adapte práticas de Benchmarking e enfrente imprevistos.</p></section><div class="stats"><div class="stat"><strong>R$ 50 mil</strong><small>Orçamento inicial</small></div><div class="stat"><strong>5</strong><small>Desafios 5S</small></div><div class="stat"><strong>2</strong><small>Imprevistos</small></div><div class="stat"><strong>80 pts</strong><small>Meta mínima</small></div></div><div class="card"><h3>Começar partida</h3><label class="small" for="team">Nome da equipe</label><input id="team" class="field" maxlength="35" value="${escapeHTML(state.team)}"><div class="actions"><button class="btn" id="start">Iniciar jogo →</button><button class="btn secondary" id="how">Como jogar?</button></div><div id="instructions" class="notice hidden">1. Selecione investimentos dentro de R$ 50.000.<br>2. Resolva as questões dos cinco sensos (uma resposta por item).<br>3. Escolha e justifique o Benchmarking.<br>4. Sorteie dois imprevistos.<br>5. Compare seu resultado com a meta de 80 pontos.<br><br>Os pontos de investimentos só são validados se você atingir pelo menos 50% do desafio relacionado. A máquina automatizada exige aprovação em quatro desafios.</div></div><div class="card"><h3>Problemas da MetalPrime</h3><p class="small">Estoque desnecessário (R$ 3 mil/mês), ferramentas desorganizadas (R$ 2 mil), sujeira (R$ 4 mil), falta de padrões (R$ 3,5 mil) e falta de disciplina (R$ 2,5 mil). Total simulado: R$ 15 mil/mês.</p></div>`;
+        $("#start").onclick = () => {
+          state.team = $("#team").value.trim() || "Equipe 1";
+          go("invest");
+        };
+        $("#how").onclick = () => $("#instructions").classList.toggle("hidden");
+      }
+      function invest(v) {
+        v.innerHTML = `<div class="hero"><span class="step">ETAPA 1 DE 4</span><h1>Planejamento financeiro</h1><p>Selecione investimentos. Cada escolha consome orçamento e pode proteger a empresa contra imprevistos.</p></div><div class="stats"><div class="stat"><strong class="money" id="balance"></strong><small>Saldo</small></div><div class="stat"><strong id="count"></strong><small>Investimentos</small></div><div class="stat"><strong id="potential"></strong><small>Pontos potenciais</small></div><div class="stat"><strong>R$ 50 mil</strong><small>Limite total</small></div></div><div class="grid" id="investments"></div><div class="notice">Reserve dinheiro para o Benchmarking: adaptar custa R$ 10.000, copiar custa R$ 25.000.</div><div class="actions"><button class="btn" id="continue">Confirmar investimentos →</button><button class="btn secondary" id="reset">Recomeçar</button></div>`;
+        const list = $("#investments");
+        investments.forEach((i, k) => {
+          let c = document.createElement("div");
+          c.className = "card";
+          c.innerHTML = `<span class="tag">${i[0]}</span><h3 style="margin-top:10px">${i[1]}</h3><p class="small">Custo: ${money(i[2])} · +${i[3]} pontos condicionais</p><button class="btn secondary" id="buy${k}"></button>`;
+          list.append(c);
+          $("#buy" + k).onclick = () => {
+            if (state.bought.includes(k)) {
+              state.bought = state.bought.filter((x) => x !== k);
+              state.budget += i[2];
+            } else if (state.budget >= i[2]) {
+              state.bought.push(k);
+              state.budget -= i[2];
+            }
+            render();
+          };
+        });
+        $("#balance").textContent = money(state.budget);
+        $("#count").textContent = state.bought.length;
+        $("#potential").textContent = state.bought.reduce(
+          (t, k) => t + investments[k][3],
+          0,
+        );
+        investments.forEach((i, k) => {
+          const b = $("#buy" + k);
+          b.textContent = state.bought.includes(k) ? "✓ Remover" : "Investir";
+          b.disabled = !state.bought.includes(k) && state.budget < i[2];
+        });
+        $("#continue").onclick = () => go("challenge");
+        $("#reset").onclick = () => {
+          if (confirm("Descartar a partida atual?")) {
+            fresh();
+            go("home");
+          }
+        };
+      }
+      function shuffled(values) {
+        const result = [...values];
+        for (let i = result.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [result[i], result[j]] = [result[j], result[i]];
+        }
+        return result;
+      }
+      const scenarioDistractors = {
+        2: [
+          [
+            "Parar e isolar a área; limpar o piso e retomar sem verificar a máquina",
+            "Fechar o acesso e aguardar a limpeza de rotina",
+            "Trocar o material absorvente a cada turno"
+          ],
+          [
+            "Transferir o excesso para outra lixeira do setor",
+            "Aumentar o tamanho da lixeira sem ajustar as retiradas",
+            "Reforçar a coleta apenas nos dias de auditoria"
+          ],
+          [
+            "Varrer os cavacos para debaixo da bancada até o fim do turno",
+            "Recolher manualmente com luvas, sem ferramenta",
+            "Soprar os cavacos em direção a um coletor"
+          ],
+          [
+            "Limpar quando a poeira começar a afetar a operação",
+            "Aumentar a frequência de limpeza sem definir um método",
+            "Limpar apenas a parte externa antes das inspeções"
+          ],
+          [
+            "Instalar uma bandeja e reforçar a troca do absorvente",
+            "Completar o reservatório para manter o nível",
+            "Aumentar a frequência de limpeza ao redor do equipamento"
+          ]
+        ],
+        3: [
+          [
+            "Revisar as metas do turno",
+            "Fazer um teste rápido da máquina",
+            "Separar os materiais do primeiro lote"
+          ],
+          [
+            "Verificar apenas a limpeza da bancada",
+            "Começar a preparar a primeira peça",
+            "Conferir a programação de entregas"
+          ],
+          [
+            "Conferir somente a quantidade dos materiais",
+            "Agrupar lotes visualmente semelhantes",
+            "Dar preferência ao lote aberto sem conferir a etiqueta"
+          ],
+          [
+            "Comunicar verbalmente e seguir sem registro",
+            "Anotar apenas as falhas que já interromperam a produção",
+            "Deixar o registro para o fechamento do turno"
+          ],
+          [
+            "Presumir liberação quando a máquina liga",
+            "Solicitar liberação após a primeira peça",
+            "Usar a autorização do dia anterior"
+          ],
+          [
+            "Rodar o primeiro lote antes da liberação",
+            "Começar apenas com a confirmação verbal de um colega",
+            "Antecipar a produção enquanto aguarda a equipe responsável"
+          ]
+        ],
+      };
+      const routineScenarios = [
+        "Após a troca de lote do fim de semana, a equipe encontra sobras de material, itens sem identificação e peças em uso.",
+        "As ferramentas do turno anterior ficaram fora dos lugares e os operadores estão perdendo tempo para localizá-las.",
+        "Há poeira na máquina e marcas recentes de fluido no chão. A equipe precisa examinar o posto e tratar a sujeira.",
+        "Dois operadores usam listas diferentes para liberar a mesma máquina. A equipe precisa conferir qual procedimento está vigente.",
+        "No fechamento da semana, a supervisão quer verificar a aplicação dos cinco sensos e registrar as pendências encontradas."
+      ];
+      function challenge(v) {
+        const n = state.stage,
+          st = stages[n];
+        if (!st) {
+          if (state.stageScores.length === 5) go("benchmark");
+          else {
+            state.stage = 0;
+            go("challenge");
+          }
+          return;
+        }
+        if (
+          n > 0 &&
+          (state.stageScores.length < n ||
+            state.stageScores.some((x, i) => i < n && typeof x !== "number"))
+        ) {
+          state.stage = state.stageScores.length;
+          go("challenge");
+          return;
+        }
+        const isPanel = n === 1;
+        const items = n === 0 || isPanel ? shuffled(st.items) : st.items;
+        const total = items.length + (n === 4 ? 1 : 0);
+        let answers = state.answers[n] || {};
+        let ix = 0,
+          selected = null,
+          confirmed = false;
+        const descriptions = [
+          "O Seiri ensina a distinguir o que é necessário, o que pode ser retirado e o que precisa de avaliação antes de qualquer decisão. Analise cada material para evitar desperdícios e descartes indevidos.",
+          "No Seiton, cada item tem um lugar definido. As etiquetas do painel ajudam a encontrar o que você precisa e a devolver cada item depois do uso.",
+          "O Seiso não é apenas limpar: é identificar e combater as causas da sujeira. Escolha a ação preventiva e segura mais adequada a cada situação.",
+          "O Seiketsu estabelece padrões para manter os três primeiros sensos. Organize a sequência de início do turno de acordo com o procedimento definido pela fábrica.",
+          "O Shitsuke transforma boas práticas em hábitos. Analise a situação de cada dia e indique como acompanhar as correções após uma auditoria.",
+        ];
+        const why = [
+          {
+            Necessário:
+              "Este item está em uso ou atende às operações e deve ser mantido.",
+            Desnecessário:
+              "Este item não tem utilidade atual na operação e deve seguir a destinação adequada.",
+            Avaliar:
+              "Sem identificação ou com inspeção pendente, não é seguro liberar nem descartar o item antes da avaliação.",
+          },
+          {},
+          {
+            "Isolar, conter e corrigir o vazamento":
+              "A medida protege as pessoas, controla o derramamento e elimina sua causa.",
+            "Adequar a coleta e frequência de retirada":
+              "Ajustar a coleta evita que o problema volte a ocorrer.",
+            "Recolher com ferramentas e EPIs adequados":
+              "Cavacos oferecem risco de corte e precisam de remoção segura.",
+            "Definir limpeza preventiva segura":
+              "Uma rotina planejada evita acúmulo sem comprometer a segurança.",
+            "Investigar e reparar a origem":
+              "Consertar a origem do vazamento evita recorrência.",
+          },
+          {},
+          {},
+        ];
+        v.innerHTML = `<div class="hero"><span class="step">ETAPA 2 DE 4 · DESAFIO ${n + 1}/5</span><h1>${st.name}</h1><p>${descriptions[n]}</p><div class="notice"><strong>Seu desafio:</strong> ${escapeHTML(st.intro)}<br><span class="small">${isPanel ? "Leia as etiquetas, toque ou clique no espaço escolhido e confirme o encaixe. Você pode trocar de espaço antes de confirmar." : "Selecione uma opção. Você pode alterá-la antes de confirmar. Após confirmar, leia o feedback para avançar."}</span></div><div class="progress"><div style="width:${(n / 5) * 100}%"></div></div></div><div class="stats"><div class="stat"><strong id="counter">1/${total}</strong><small>${isPanel ? "Item atual" : "Questão atual"}</small></div><div class="stat"><strong>${st.items.length * st.points + (n === 4 ? 5 : 0)}</strong><small>Pontos máximos</small></div></div><div class="card" id="question"></div><div class="actions"><button class="btn" id="confirmAnswer" disabled>${isPanel ? "Confirmar encaixe" : "Confirmar resposta"}</button><button class="btn secondary hidden" id="nextAnswer">Próxima questão →</button></div>`;
+        const q = $("#question"),
+          confirmBtn = $("#confirmAnswer"),
+          nextBtn = $("#nextAnswer");
+        function draw() {
+          selected = null;
+          confirmed = false;
+          confirmBtn.disabled = true;
+          confirmBtn.classList.remove("hidden");
+          nextBtn.classList.add("hidden");
+          $("#counter").textContent = `${ix + 1}/${total}`;
+          const extra = ix === items.length;
+          const item = extra
+            ? [
+                "Como manter a disciplina após a auditoria?",
+                "Registrar falhas, responsáveis, prazos e verificar correções",
+              ]
+            : items[ix];
+          const itemIndex = extra ? st.items.length : st.items.indexOf(item);
+          const distractors = scenarioDistractors[n]?.[itemIndex];
+          let opts = st.opts;
+          if (extra) {
+            opts = [
+              "Atualizar a lista de verificação e aguardar a próxima auditoria",
+              "Corrigir primeiro as falhas mais visíveis e comunicar a equipe",
+              item[1],
+              "Divulgar as ocorrências e pedir que cada setor resolva suas pendências",
+            ];
+          } else if (distractors) {
+            opts = [...distractors];
+            const answerPositions = n === 2 ? [2, 0, 3, 1, 2] : [3, 1, 0, 2, 0, 3];
+            opts.splice(answerPositions[itemIndex], 0, item[1]);
+          } else if (n === 4) {
+            const answerPositions = [1, 4, 0, 2, 1];
+            opts = st.opts.filter((option) => option !== item[1]);
+            opts.splice(answerPositions[itemIndex], 0, item[1]);
+          }
+          const scenario = n === 4 && !extra ? routineScenarios[itemIndex] : "";
+          q.innerHTML = `<span class="tag">${isPanel ? "ITEM" : "QUESTÃO"} ${ix + 1} DE ${total}</span>
+            <h3 id="challenge-item" tabindex="-1" style="margin-top:15px">${isPanel ? "Onde guardar: " : ""}${escapeHTML(item[0])}</h3>
+            ${scenario ? `<p>${escapeHTML(scenario)}</p>` : ""}
+            <p class="small">${isPanel ? "Qual etiqueta descreve o uso deste item?" : "Escolha a alternativa que melhor resolve a situação:"}</p>
+            <div class="options ${isPanel ? "panel-options" : ""}" role="group" aria-labelledby="challenge-item">${opts.map((o, j) => `<button type="button" class="option" data-choice="${j}" aria-pressed="false">${isPanel ? `<span class="panel-address">Espaço ${escapeHTML(o)}</span><strong>${escapeHTML(st.labels[o])}</strong>` : escapeHTML(o)}</button>`).join("")}</div>
+            ${isPanel ? `<p class="small panel-selection" id="panel-selection" aria-live="polite">Escolha um espaço do painel.</p>` : ""}
+            <div id="feedback" aria-live="polite"></div>`;
+          q.querySelectorAll("[data-choice]").forEach(
+            (b) =>
+              (b.onclick = () => {
+                if (confirmed) return;
+                selected = Number(b.dataset.choice);
+                q.querySelectorAll("[data-choice]").forEach((x) => {
+                  x.classList.toggle("selected", x === b);
+                  x.setAttribute("aria-pressed", String(x === b));
+                });
+                if (isPanel) {
+                  const address = opts[selected];
+                  $("#panel-selection").textContent =
+                    `Espaço escolhido: ${address} · ${st.labels[address]}`;
+                }
+                confirmBtn.disabled = false;
+              }),
+          );
+          confirmBtn.onclick = () => {
+            if (selected === null || confirmed) return;
+            confirmed = true;
+            const answer = opts[selected],
+              correct = answer === item[1];
+            answers[itemIndex] = correct;
+            state.answers[n] = answers;
+            q.querySelectorAll("[data-choice]").forEach((b) => {
+              b.disabled = true;
+              const value = opts[Number(b.dataset.choice)];
+              b.classList.remove("selected");
+              if (value === item[1]) b.classList.add("correct");
+              else if (Number(b.dataset.choice) === selected)
+                b.classList.add("wrong");
+            });
+            let explanation;
+            if (extra)
+              explanation =
+                "Atualizar a lista ou comunicar as falhas ajuda, mas o acompanhamento exige que cada correção tenha um responsável, um prazo e uma verificação.";
+            else if (n === 0) explanation = why[0][item[1]];
+            else if (isPanel)
+              explanation = `O espaço ${item[1]} tem a etiqueta “${st.labels[item[1]]}”. Ao devolver ${item[0]} a esse endereço, a próxima pessoa já sabe onde procurar.`;
+            else if (n === 2) explanation = why[2][item[1]];
+            else if (n === 3)
+              explanation = `Na sequência padronizada da MetalPrime, ${item[0].toLowerCase()} corresponde a “${item[1]}”. Seguir a ordem estabelecida evita omissões e permite liberar a produção com segurança.`;
+            else
+              explanation = `A situação de ${item[0].toLowerCase()} pede “${item[1]}”. A rotina 5S ajuda a tratar e prevenir problemas como esse.`;
+            $("#feedback").innerHTML =
+              `<div class="notice ${correct ? "" : "bad"}" role="status"><strong>${correct ? "✓ Resposta correta!" : "✕ Resposta incorreta."}</strong><p>${correct ? (isPanel ? "Você colocou o item no espaço certo." : "Você escolheu a ação esperada.") : "Você selecionou “" + escapeHTML(answer) + "”, mas a resposta correta é “" + escapeHTML(item[1]) + "”."}</p><p><strong>Por quê?</strong> ${escapeHTML(explanation)}</p></div>`;
+            confirmBtn.classList.add("hidden");
+            nextBtn.classList.remove("hidden");
+            nextBtn.textContent =
+              ix === total - 1 ? "Concluir desafio →" : isPanel ? "Próximo item →" : "Próxima questão →";
+            nextBtn.focus();
+            save();
+          };
+        }
+        nextBtn.onclick = () => {
+          if (!confirmed) return;
+          ix++;
+          if (ix < total) {
+            draw();
+            $("#challenge-item").focus();
+          } else finish();
+        };
+        function finish() {
+          const correct = st.items.filter((_, i) => answers[i]).length;
+          const pts =
+            correct * st.points + (n === 4 && answers[st.items.length] ? 5 : 0);
+          const max = st.items.length * st.points + (n === 4 ? 5 : 0);
+          state.stageScores[n] = pts;
+          state.completed[n] = pts >= max / 2;
+          state.stage = n + 1;
+          save();
+          v.innerHTML = `<div class="hero"><span class="tag">DESAFIO ${n + 1} CONCLUÍDO</span><h1>${st.name}</h1><p>Você conquistou <strong class="money">${pts} de ${max} pontos</strong>.</p><div class="notice">${state.completed[n] ? "Você atingiu a pontuação necessária para validar investimentos relacionados a este senso." : "Você concluiu o desafio, mas não atingiu 50% dos pontos para validar os investimentos associados. Pode continuar para aprender os demais sensos."}</div><button class="btn" id="proceed">${n < 4 ? "Liberar desafio " + (n + 2) + " →" : "Continuar para Benchmarking →"}</button></div>`;
+          $("#proceed").onclick = () => go(n < 4 ? "challenge" : "benchmark");
+        }
+        draw();
+      }
+      function benchmark(v) {
+        v.innerHTML = `<div class="hero"><span class="step">ETAPA 3 DE 4</span><h1>Benchmarking</h1><p>Compare a MetalPrime com a TechMetal, uma <strong>empresa fictícia utilizada exclusivamente nesta simulação</strong>.</p></div><div class="columns"><div class="card"><h3>MetalPrime</h3><div class="score">R$ 15 mil</div><p class="small">Prejuízo mensal simulado. Sem auditorias regulares e com manutenção corretiva.</p></div><div class="card"><h3>TechMetal (simulação)</h3><div class="score">R$ 8 mil</div><p class="small">Prejuízo mensal simulado após adotar identificação visual, auditorias e prevenção.</p></div></div><div class="card"><h3>Qual estratégia você escolhe?</h3><div class="options">${[
+          ["Copiar o modelo inteiro", 25000, 15],
+          ["Adaptar práticas à MetalPrime", 10000, 25],
+          ["Não utilizar Benchmarking", 0, 0],
+        ]
+          .map(
+            (o, i) =>
+              `<button class="option ${state.bench === i ? "selected" : ""}" data-bench="${i}" ${state.budget < o[1] && state.bench !== i ? "disabled" : ""}><strong>${o[0]}</strong><br><span class="small">${money(o[1])} · +${o[2]} pontos possíveis</span></button>`,
+          )
+          .join(
+            "",
+          )}</div><h3 style="margin-top:18px">Justifique sua escolha</h3><p class="small">Explique quais práticas podem ser aplicadas, quais adaptações são necessárias e por quê. O mediador deverá avaliar a justificativa na apresentação.</p><textarea class="field" id="reason" rows="4" placeholder="Minha equipe escolheu...">${escapeHTML(state.benchReason)}</textarea><div class="actions"><button class="btn" id="confirm">Confirmar decisão →</button></div><p id="err" class="warning"></p></div>`;
+        document.querySelectorAll("[data-bench]").forEach(
+          (b) =>
+            (b.onclick = () => {
+              state.bench = Number(b.dataset.bench);
+              state.benchReason = $("#reason").value;
+              render();
+            }),
+        );
+        $("#confirm").onclick = () => {
+          let reason = $("#reason").value.trim();
+          if (state.bench === null || reason.length < 10) {
+            $("#err").textContent =
+              "Selecione uma opção e escreva uma justificativa com pelo menos 10 caracteres.";
+            return;
+          }
+          let cost = [25000, 10000, 0][state.bench];
+          if (state.budget < cost) {
+            $("#err").textContent = "Saldo insuficiente.";
+            return;
+          }
+          state.benchReason = reason;
+          state.budget -= cost;
+          state.benchPts = [15, 25, 0][state.bench];
+          go("eventScreen");
+        };
+      }
+      function eventScreen(v) {
+        v.innerHTML = `<div class="hero"><span class="step">ETAPA 4 DE 4</span><h1>Imprevistos da fábrica</h1><p>Sorteie duas situações. Os investimentos feitos anteriormente alteram as consequências.</p></div><div class="stats"><div class="stat"><strong>${state.events.length}/2</strong><small>Cartas reveladas</small></div><div class="stat"><strong>${money(state.budget)}</strong><small>Saldo atual</small></div></div><div id="eventList"></div><div class="actions"><button class="btn" id="draw" ${state.events.length >= 2 ? "disabled" : ""}>Sortear imprevisto</button><button class="btn secondary" id="finish" ${state.events.length < 2 ? "disabled" : ""}>Ver resultado final →</button></div>`;
+        $("#eventList").innerHTML = state.events
+          .map(
+            (e) =>
+              `<div class="card"><span class="tag">IMPREVISTO</span><h3 style="margin-top:12px">${e.title}</h3><p>${e.message}</p></div>`,
+          )
+          .join("");
+        $("#draw").onclick = () => {
+          const available = events
+            .map((_, i) => i)
+            .filter((i) => !state.events.some((e) => e.id === i));
+          const id = available[Math.floor(Math.random() * available.length)];
+          const [cost, pts, message] = events[id][1](state);
+          state.budget += cost;
+          state.eventPoints += pts;
+          state.events.push({ id, title: events[id][0], message });
+          render();
+        };
+        $("#finish").onclick = () => go("results");
+      }
+      const improvementTips = [
+        "Separe os itens em necessário, desnecessário e avaliar. Encaminhe itens sem identificação ou inspeção para avaliação.",
+        "Use etiquetas que indiquem o que fica em cada espaço do painel e devolva cada item ao seu endereço após o uso.",
+        "Identifique a origem da sujeira e defina como evitar que ela volte, com os cuidados de segurança adequados.",
+        "Use uma lista de verificação para o início do turno e confirme a liberação antes de começar a produção.",
+        "Registre as falhas da auditoria, defina responsáveis e prazos e acompanhe as correções.",
+      ];
+      function results(v) {
+        let challenges = state.stageScores.reduce((a, b) => a + b, 0),
+          valid = state.bought.filter((k) => {
+            let d = investments[k][4];
+            return d < 0
+              ? state.completed.filter(Boolean).length >= 4
+              : state.completed[d];
+          }),
+          investPts = valid.reduce((a, k) => a + investments[k][3], 0),
+          bonus = Math.min(15, Math.floor(Math.max(0, state.budget) / 2000)),
+          debt = Math.ceil(Math.max(0, -state.budget) / 1000) * 2,
+          total =
+            challenges +
+            investPts +
+            state.benchPts +
+            state.eventPoints +
+            bonus -
+            debt;
+        const validatedCount = state.completed.filter(Boolean).length;
+        const signed = (points) => points > 0 ? "+" + points : String(points);
+        const status = total >= 140 ? "Desempenho excelente" : total >= 80 ? "Meta atingida" : "Meta ainda não atingida";
+        const goalFeedback = total < 80
+          ? `Faltaram ${80 - total} pontos para a meta de 80.`
+          : `Você atingiu a meta de 80 pontos${total > 80 ? ` com ${total - 80} pontos de sobra` : ""}.`;
+        const stageReport = stages.map((stage, index) => {
+          const max = stage.items.length * stage.points + (index === 4 ? 5 : 0);
+          const score = state.stageScores[index];
+          const answers = state.answers?.[index];
+          const missed = stage.items.flatMap(([prompt, answer], itemIndex) =>
+            answers?.[itemIndex] === false ? [[prompt, answer]] : [],
+          );
+          if (index === 4 && answers?.[stage.items.length] === false) {
+            missed.push(["Como manter a disciplina após a auditoria?", "Registrar falhas, responsáveis, prazos e verificar correções"]);
+          }
+          return { index, max, score, missed };
+        });
+        const priority = stageReport.filter(({ score, max }) => score < max)
+          .sort((a, b) => a.score / a.max - b.score / b.max)[0];
+        const benchmarkChoices = ["Copiar o modelo inteiro", "Adaptar práticas à MetalPrime", "Não utilizar Benchmarking"];
+        const scoreLines = [
+          ["Desafios 5S", challenges],
+          ["Investimentos validados", investPts],
+          ["Benchmarking", state.benchPts],
+          ["Imprevistos", state.eventPoints],
+          ["Bônus de saldo", bonus],
+          ["Penalidade por saldo negativo", -debt],
+        ];
+        v.innerHTML = `<div class="hero">
+          <span class="tag">PARTIDA FINALIZADA</span>
+          <h1>Resultado de ${escapeHTML(state.team)}</h1>
+          <p><strong>${status}.</strong> ${goalFeedback}</p>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong class="money">${total}</strong><small>Pontuação final</small></div>
+          <div class="stat"><strong>${money(state.budget)}</strong><small>Saldo final</small></div>
+          <div class="stat"><strong>${validatedCount}/5</strong><small>Sensos validados</small></div>
+          <div class="stat"><strong>${valid.length}/${state.bought.length}</strong><small>Investimentos validados</small></div>
+        </div>
+        <div class="card"><h3>Prioridade para a próxima partida</h3>
+          <p>${priority ? `Comece por <strong>${stages[priority.index].name}</strong> (${priority.score}/${priority.max} pontos). ${improvementTips[priority.index]}` : "Você alcançou a pontuação máxima nos cinco sensos. Compare como outras escolhas de investimento afetam o saldo e a resposta aos imprevistos."}</p>
+          ${state.budget < 0 ? `<p>O orçamento terminou ${money(-state.budget)} no negativo, com uma penalidade de ${debt} pontos. Reserve parte do orçamento para custos inesperados na próxima partida.</p>` : ""}
+        </div>
+        <div class="card"><h3>Desempenho nos cinco sensos</h3>
+          <p class="small">Cada senso exige pelo menos 50% dos pontos para validar os investimentos ligados a ele.</p>
+          <ul class="result-list">${stageReport.map(({ index, max, score, missed }) => `<li>
+            <strong>${stages[index].name} · ${score}/${max} pts</strong>
+            <p class="small">${state.completed[index] ? "Validado" : `Abaixo do mínimo de ${Math.ceil(max / 2)} pontos`} · ${score === max ? "Pontuação máxima" : improvementTips[index]}</p>
+            ${missed.length ? `<details><summary>Revisar respostas (${missed.length})</summary><ul>${missed.map(([prompt, answer]) => `<li><strong>${escapeHTML(prompt)}</strong> → ${escapeHTML(index === 1 ? `Espaço ${answer} · ${stages[index].labels[answer]}` : answer)}</li>`).join("")}</ul></details>` : ""}
+          </li>`).join("")}</ul>
+        </div>
+        <div class="card"><h3>Investimentos realizados</h3>
+          ${state.bought.length ? `<ul class="result-list">${state.bought.map((key) => {
+            const [, name, cost, points, stage] = investments[key];
+            const requirement = stage < 0 ? "validar pelo menos quatro sensos" : `validar ${stages[stage].name.split(" • ")[0]}`;
+            return `<li><strong>${escapeHTML(name)}</strong> · ${money(cost)}<p class="small">${valid.includes(key) ? `Validado · +${points} pts` : `0 de ${points} pts · Para pontuar, era preciso ${requirement}. O valor foi descontado na compra.`}</p></li>`;
+          }).join("")}</ul>` : "<p>Nenhum investimento foi realizado nesta partida.</p>"}
+        </div>
+        <div class="card"><h3>Benchmarking e imprevistos</h3>
+          <p><strong>Estratégia escolhida</strong> · ${benchmarkChoices[state.bench]} (${signed(state.benchPts)} pts)</p>
+          <p class="small"><strong>Justificativa da equipe</strong> · ${escapeHTML(state.benchReason)}</p>
+          <ul class="result-list">${state.events.map(({ title, message }) => `<li><strong>${escapeHTML(title)}</strong><p class="small">${escapeHTML(message)}</p></li>`).join("")}</ul>
+        </div>
+        <div class="card"><h3>Como a pontuação foi calculada</h3>
+          <ul class="result-list">${scoreLines.map(([label, points]) => `<li class="top"><span>${label}</span><strong>${signed(points)}</strong></li>`).join("")}
+          <li class="top"><strong>Total</strong><strong>${total} pts</strong></li></ul>
+          <p class="small">O saldo positivo rende 1 ponto a cada R$ 2.000 completos, até 15 pontos. Cada R$ 1.000 de saldo negativo, inclusive frações, desconta 2 pontos.</p>
+        </div>
+        <div class="actions"><button class="btn" id="again">Nova partida</button><button class="btn secondary" id="print">Imprimir resultado</button><button class="btn" id="evaluation">Responder avaliação</button></div>`;
+        $("#again").onclick = () => {
+          if (confirm("Iniciar nova partida?")) {
+            fresh();
+            go("home");
+          }
+        };
+        $("#print").onclick = () => window.print();
+        $("#evaluation").onclick = () => {
+          if (!LINK_AVALIACAO.trim()) {
+            alert("O formulário de avaliação ainda não está disponível.");
+            return;
+          }
+          window.open(LINK_AVALIACAO, "_blank", "noopener,noreferrer");
+        };
+      }
+      try {
+        let saved = JSON.parse(localStorage.getItem("bancoQualidadeV1"));
+        if (saved && saved.screen && typeof saved.budget === "number") {
+          state = saved;
+          if (state.screen === "challenge") {
+            state.answers[state.stage] = {};
+          }
+          if (state.screen === "benchmark" && state.stageScores.length < 5) {
+            state.screen = "challenge";
+            state.stage = state.stageScores.length;
+          }
+        } else fresh();
+      } catch {
+        fresh();
+      }
+      render();
+    </script>
+  </body>
+</html>
